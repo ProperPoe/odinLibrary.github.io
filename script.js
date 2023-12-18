@@ -14,36 +14,38 @@ let showTheForm = false;
 
 
 const myLibrary = [
-    {
-        id: 0,
-        title: 'Prometheus Rising',
-        author: 'Robert Anton Wilson',
-        pages: 200,
-        read: 'read'
-    },
-    {
-        id: 1,
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        pages: 295,
-        read: 'not read'
-    },
-    {
-        id: 2,
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        pages: 295,
-        read: 'not read'
-    },
-    {
-        id: 3,
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        pages: 295,
-        read: 'not read'
-    },
+    // {
+    //     id: 0,
+    //     title: 'Prometheus Rising',
+    //     author: 'Robert Anton Wilson',
+    //     pages: 200,
+    //     read: 'read'
+    // },
+    // {
+    //     id: 1,
+    //     title: 'The Hobbit',
+    //     author: 'J.R.R. Tolkien',
+    //     pages: 295,
+    //     read: 'not read'
+    // },
+    // {
+    //     id: 2,
+    //     title: 'The Hobbit',
+    //     author: 'J.R.R. Tolkien',
+    //     pages: 295,
+    //     read: 'not read'
+    // },
+    // {
+    //     id: 3,
+    //     title: 'The Hobbit',
+    //     author: 'J.R.R. Tolkien',
+    //     pages: 295,
+    //     read: 'not read'
+    // },
 
 ];
+
+
 
 
 function Book(id, title, author, pages, read){
@@ -78,7 +80,8 @@ function addBookToLibrary (e) {
     let pagesVal = pages.value;
     let readVal = bookRead.value;
     
-    myLibrary.push(new Book(4, titleVal, authorVal, pagesVal, readVal))
+    myLibrary.push(new Book(4, titleVal, authorVal, pagesVal, readVal));
+    localStorage.setItem('bookItem', JSON.stringify(myLibrary))
     console.log(myLibrary)
 
     title.value = '';
@@ -88,19 +91,28 @@ function addBookToLibrary (e) {
 
 
     bookContainer.textContent = ""
-    myLibrary.forEach((books) => {
-        loadBooks(books);
-    });
-}
+    // let getBookItem = JSON.parse(localStorage.getItem('bookItem'));
+    // if(getBookItem){
 
-
-if(myLibrary.length > 0){
-
+    //     getBookItem.forEach((books) => {
+    //         loadBooks(books);
+    //     });
+    // }
     myLibrary.forEach((books) => {
         loadBooks(books)
     })
 }
 
+
+let booksLs = JSON.parse(localStorage.getItem('bookItem'))
+
+let book = booksLs;
+if(book){
+    book.forEach((books) => {
+        loadBooks(books)
+    })
+
+}
 
 
 function loadBooks (library) {
