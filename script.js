@@ -10,7 +10,7 @@ const pages = document.getElementById("pages");
 const bookRead = document.getElementById("read");
 
 let showTheForm = false;
-
+let bookStatus = false;
 
 let myLibrary = [];
 let booksLs = JSON.parse(localStorage.getItem('bookItem'))
@@ -48,21 +48,28 @@ form.addEventListener("submit", addBookToLibrary);
 
 function addBookToLibrary (e) {
     e.preventDefault();
+    let readStatus = "";
     let titleVal = title.value;
     let authorVal = author.value;
     let pagesVal = pages.value;
+    if(bookRead.checked){
+        readStatus = 'true'
+    }else{
+        readStatus = 'false'
+    }
     let readVal = bookRead.value;
     
     let newId = Math.max(...myLibrary.map(book => book.id), 0) + 1;
 
-    myLibrary.push(new Book(newId, titleVal, authorVal, pagesVal, readVal));
+    myLibrary.push(new Book(newId, titleVal, authorVal, pagesVal, readStatus));
     localStorage.setItem('bookItem', JSON.stringify(myLibrary))
     console.log(myLibrary)
 
     title.value = '';
     author.value = '';
     pages.value = '';
-    bookRead.value = '';
+    bookRead.checked = false;
+
 
 
     clearBookContainer();
@@ -76,7 +83,8 @@ function addBookToLibrary (e) {
 
 
 function loadBooks (library) {
-    // console.log(library)
+    // console.log(bookRead.checked)
+    console.log(library)
     let newArea = document.createElement("div");
     let bookTitle = document.createElement("p");
     let author = document.createElement("p");
@@ -88,7 +96,13 @@ function loadBooks (library) {
     bookTitle.textContent = library.title;
     author.textContent = library.author;
     pages.textContent = library.pages;
-    read.textContent = library.read;
+    if(library.read === 'true'){
+
+        read.textContent = 'Read';
+    }else{
+        read.textContent = 'Not Read';
+
+    }
     deleteBtn.textContent = 'Delete';
     readBtn.textContent = 'Read';
     newArea.appendChild(bookTitle)
@@ -114,7 +128,23 @@ function loadBooks (library) {
 
         myLibrary = filtered;
     })
-    readBtn.addEventListener("click", ()=>{})
+    readBtn.addEventListener("click", ()=>{
+        const bookIdToUpdate = library.id;
+
+        let updatedLibrary = myLibrary.map((book) => {
+            if (book.id === bookIdToUpdate) {
+                book.read = book.read === "true" ? "false" : "true";
+            }
+            return book;
+        });
+    
+        localStorage.setItem("bookItem", JSON.stringify(updatedLibrary));
+    
+        clearBookContainer();
+        updatedLibrary.forEach((books) => {
+            loadBooks(books);
+        });
+    })
 
 }
 

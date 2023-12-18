@@ -3,6 +3,24 @@
     margin: 0;
 }
 
+nav{
+    background: rgb(70, 37, 37);
+    /* border-bottom: 1px solid black; */
+    box-shadow: 0 1px 5px rgb(30, 9, 9);
+    color: white;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.main-container{
+    background-color: rgb(132, 70, 70);
+    min-height: 100vh;
+}
+
+
 .book-container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -26,6 +44,8 @@
 }
 
 .showFormBtn{
+    padding-top: 25px;
+
     display: flex;
     justify-content: center;
     align-items: center;
