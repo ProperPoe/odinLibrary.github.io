@@ -2,6 +2,10 @@ const bookContainer = document.querySelector(".book-container");
 const bookTitle = document.getElementById("title");
 const bookAuthor = document.getElementById("author");
 const bookPages = document.getElementById("pages");
+const form = document.getElementById("form");
+const title = document.getElementById("title");
+const author = document.getElementById("author");
+const pages = document.getElementById("pages");
 const bookRead = document.getElementById("read");
 
 
@@ -43,36 +47,42 @@ function Book(id, title, author, pages, read){
     this.author = author;
     this.pages = pages;
     this.read = read;
-
-    // console.log(this)
-    // myLibrary.push(this)
-    // this.info = function(){
-    //     console.log(this);
-    //     // myLibrary.push(this)
-    // }
-
-    // this.info();
 }
 
-// const book1 = new Book(4, 'Illuminati Rising', "Steve", 345, 'not read');
+// myLibrary.push(new Book(4, "Boy o boy", "Steve", 345, "Not read"))
+form.addEventListener("submit", addBookToLibrary)
 
-myLibrary.push(new Book(4, 'Illuminati Rising', "Steve", 345, 'not read'))
+function addBookToLibrary (e) {
+    e.preventDefault();
+    let titleVal = title.value;
+    let authorVal = author.value;
+    let pagesVal = pages.value;
+    let readVal = bookRead.value;
+    
+    myLibrary.push(new Book(4, titleVal, authorVal, pagesVal, readVal))
+    console.log(myLibrary)
+
+    title.value = '';
+    author.value = '';
+    pages.value = '';
+    bookRead.value = '';
 
 
-myLibrary.forEach((books) => {
-    console.log(books)
-    if(books){
+    bookContainer.textContent = ""
+    myLibrary.forEach((books) => {
+        loadBooks(books);
+    });
+}
+
+
+if(myLibrary.length > 0){
+
+    myLibrary.forEach((books) => {
         loadBooks(books)
-    }
-})
-
-
-function addBookToLibrary () {
-
+    })
 }
 
 
-// console.log(myLibrary)
 
 function loadBooks (library) {
     // console.log(library)
@@ -105,11 +115,3 @@ function loadBooks (library) {
 }
 
 
-
-// console.log(book1.info())
-// console.log(myLibrary[4].title)
-// console.log(book1.info())
-// innerTest.innerHTML = book1.info()
-// let newArea = document.createElement("h1");
-// newArea.textContent = book1.info();
-// innerTest.textContent = book1;
