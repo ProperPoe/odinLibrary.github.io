@@ -12,41 +12,15 @@ const bookRead = document.getElementById("read");
 let showTheForm = false;
 
 
+let myLibrary = [];
+let booksLs = JSON.parse(localStorage.getItem('bookItem'))
 
-const myLibrary = [
-    // {
-    //     id: 0,
-    //     title: 'Prometheus Rising',
-    //     author: 'Robert Anton Wilson',
-    //     pages: 200,
-    //     read: 'read'
-    // },
-    // {
-    //     id: 1,
-    //     title: 'The Hobbit',
-    //     author: 'J.R.R. Tolkien',
-    //     pages: 295,
-    //     read: 'not read'
-    // },
-    // {
-    //     id: 2,
-    //     title: 'The Hobbit',
-    //     author: 'J.R.R. Tolkien',
-    //     pages: 295,
-    //     read: 'not read'
-    // },
-    // {
-    //     id: 3,
-    //     title: 'The Hobbit',
-    //     author: 'J.R.R. Tolkien',
-    //     pages: 295,
-    //     read: 'not read'
-    // },
-
-];
-
-
-
+if (booksLs) {
+    myLibrary = booksLs;  // Assign the loaded books to myLibrary
+    myLibrary.forEach((books) => {
+        loadBooks(books);
+    });
+}
 
 function Book(id, title, author, pages, read){
     this.id = id;
@@ -70,8 +44,7 @@ showFormBtn.addEventListener("click", () => {
         form.style.display = "flex";
     }
 })
-// myLibrary.push(new Book(4, "Boy o boy", "Steve", 345, "Not read"))
-form.addEventListener("submit", addBookToLibrary)
+form.addEventListener("submit", addBookToLibrary);
 
 function addBookToLibrary (e) {
     e.preventDefault();
@@ -80,7 +53,9 @@ function addBookToLibrary (e) {
     let pagesVal = pages.value;
     let readVal = bookRead.value;
     
-    myLibrary.push(new Book(4, titleVal, authorVal, pagesVal, readVal));
+    let newId = Math.max(...myLibrary.map(book => book.id), 0) + 1;
+
+    myLibrary.push(new Book(newId, titleVal, authorVal, pagesVal, readVal));
     localStorage.setItem('bookItem', JSON.stringify(myLibrary))
     console.log(myLibrary)
 
@@ -90,48 +65,33 @@ function addBookToLibrary (e) {
     bookRead.value = '';
 
 
-    bookContainer.textContent = ""
-    // let getBookItem = JSON.parse(localStorage.getItem('bookItem'));
-    // if(getBookItem){
-
-    //     getBookItem.forEach((books) => {
-    //         loadBooks(books);
-    //     });
-    // }
+    clearBookContainer();
     myLibrary.forEach((books) => {
         loadBooks(books)
     })
 }
 
 
-let booksLs = JSON.parse(localStorage.getItem('bookItem'))
 
-let book = booksLs;
-if(book){
-    book.forEach((books) => {
-        loadBooks(books)
-    })
-
-}
 
 
 function loadBooks (library) {
     // console.log(library)
     let newArea = document.createElement("div");
-    let title = document.createElement("p");
+    let bookTitle = document.createElement("p");
     let author = document.createElement("p");
     let pages = document.createElement("p");
     let read = document.createElement("p");
     let deleteBtn = document.createElement("button");
     let readBtn = document.createElement("button");
 
-    title.textContent = library.title;
+    bookTitle.textContent = library.title;
     author.textContent = library.author;
     pages.textContent = library.pages;
     read.textContent = library.read;
     deleteBtn.textContent = 'Delete';
     readBtn.textContent = 'Read';
-    newArea.appendChild(title)
+    newArea.appendChild(bookTitle)
     newArea.appendChild(author)
     newArea.appendChild(pages)
     newArea.appendChild(read)
@@ -140,9 +100,26 @@ function loadBooks (library) {
     newArea.classList.add("card")
     bookContainer.appendChild(newArea);
 
-    deleteBtn.addEventListener("click", ()=>{})
+    deleteBtn.addEventListener("click", ()=> {
+        console.log(library)
+        const bookIdToDelete = library.id;
+
+        let filtered = myLibrary.filter(book => book.id !== bookIdToDelete)
+
+
+        localStorage.setItem('bookItem', JSON.stringify(filtered));
+
+
+        newArea.remove();
+
+        myLibrary = filtered;
+    })
     readBtn.addEventListener("click", ()=>{})
 
+}
+
+function clearBookContainer() {
+    bookContainer.innerHTML = "";
 }
 
 
