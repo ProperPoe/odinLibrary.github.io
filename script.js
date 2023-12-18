@@ -2,11 +2,15 @@ const bookContainer = document.querySelector(".book-container");
 const bookTitle = document.getElementById("title");
 const bookAuthor = document.getElementById("author");
 const bookPages = document.getElementById("pages");
+const showFormBtn = document.getElementById("showForm");
 const form = document.getElementById("form");
 const title = document.getElementById("title");
 const author = document.getElementById("author");
 const pages = document.getElementById("pages");
 const bookRead = document.getElementById("read");
+
+let showTheForm = false;
+
 
 
 const myLibrary = [
@@ -41,6 +45,7 @@ const myLibrary = [
 
 ];
 
+
 function Book(id, title, author, pages, read){
     this.id = id;
     this.title = title;
@@ -48,7 +53,21 @@ function Book(id, title, author, pages, read){
     this.pages = pages;
     this.read = read;
 }
+form.style.display = "none"
 
+showFormBtn.addEventListener("click", () => {
+    if(showTheForm === false){
+        showTheForm = true;
+    }else{
+        showTheForm = false;
+    }
+
+    if(!showTheForm){
+        form.style.display = "none";
+    }else{
+        form.style.display = "flex";
+    }
+})
 // myLibrary.push(new Book(4, "Boy o boy", "Steve", 345, "Not read"))
 form.addEventListener("submit", addBookToLibrary)
 
